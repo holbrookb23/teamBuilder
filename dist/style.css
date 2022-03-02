@@ -1,0 +1,48 @@
+.header {
+
+    justify-content: center;
+    display: flex;
+    border-bottom: black solid 0.01rem;
+    width: 100%;
+    padding: 1.5rem;
+    background-color: rgb(223, 64, 64);
+
+
+}
+
+.footer {
+    padding: 1rem;
+    border-top: black solid 0.01rem;
+    margin: 0;
+    background-color: rgb(223, 64, 64);
+}
+
+.card {
+    border: black solid .01rem;
+    min-width: 10rem;
+    border-radius: 1.25rem;
+}
+
+.cont {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 1rem;
+}
+
+.title {
+    border-bottom: black solid 0.01rem;
+    padding: 0.4rem;
+    background-color: #3bcfff;
+    border-radius: 1.25rem 1.25rem 0rem 0rem;
+}
+
+.det {
+    padding: 0.4rem;
+    border: darkgray solid 0.02rem;
+    margin: 0.4rem;
+    border-radius: 1.25rem;
+}
+
+.m-0 {
+    margin: 0;
+}

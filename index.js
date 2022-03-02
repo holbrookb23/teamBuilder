@@ -3,10 +3,13 @@ const inquirer = require('inquirer');
 const Manager = require('./lib/manager')
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
+const fs = require('fs');
 
 const managers = [];
 const engineers = [];
+
 const interns = [];
+
 
 
 inquirer
@@ -42,14 +45,13 @@ inquirer
        const manager = new Manager(response.manName, response.id, response.email, response.officeNumber);
        
       managers.push(manager);
-      console.log(manager);
       
       if (response.employee === "Engineer") {
         generateEngineer()
       } else if (response.employee === "Intern") {
         generateIntern()
       } else {
-
+        generateHtml
       }
   }
      
@@ -88,12 +90,13 @@ function generateEngineer() {
 .then((response) => {
   const engineer = new Engineer(response.name, response.id, response.email, response.github);
   engineers.push(engineer);
+  genIntCard(interns);
   if (response.employee === "Engineer") {
     generateEngineer()
   } else if (response.employee === "Intern") {
     generateIntern()
   } else {
-    
+    generateHtml()
   }
 })
 }
@@ -138,23 +141,24 @@ function generateIntern() {
   } else if (response.employee === "Intern") {
     generateIntern()
   } else {
-    
+    genIntCard()
+    generateHtml()
   }
 })
 }
 
 const genManCard = () => {
-  const manCard = "";
+  let manCard = "";
   managers.forEach((manager) => {
     manCard += `
-    <div>
-        <div>
+    <div class="card">
+        <div class="title">
             <h3>${manager.name}</h3>
             <h4>${manager.getRole()}</h4>
         </div>
-        <div>
+        <div class="det">
             <p>ID: ${manager.id}</p>
-            <a href="">Email: ${manager.email}</a>
+            <p>Email: <span><a href="${manager.email}" target="_blank">${manager.email}</a></span></p>
             <p>Office Number: ${manager.officeNumber}</p>
         </div>
     </div>
@@ -164,18 +168,18 @@ const genManCard = () => {
 }
 
 const genEngCard = () => {
-  const engCard = "";
+  let engCard = "";
   engineers.forEach((engineer) => {
     engCard += `
-    <div>
-        <div>
+    <div class="card">
+        <div class="title">
             <h3>${engineer.name}</h3>
             <h4>${engineer.getRole()}</h4>
         </div>
-        <div>
+        <div class="det">
             <p>ID: ${engineer.id}</p>
-            <a href="">Email: ${engineer.email}</a>
-            <a href="">Github: ${engineer.github}</a>
+            <p>Email: <span><a href="${engineer.email}" target="_blank">${engineer.email}</a></span></p>
+            <p>Github: <a href="https://github.com/${engineer.github}" target="_blank">${engineer.github}</a></p>
         </div>
     </div>
     `
@@ -185,17 +189,17 @@ const genEngCard = () => {
 
 
 const genIntCard = () => {
-  const intCard = "";
+  let intCard = "";
   interns.forEach((intern) => {
     intCard += `
-    <div>
-        <div>
+    <div class="card">
+        <div class="title">
             <h3>${intern.name}</h3>
             <h4>${intern.getRole()}</h4>
         </div>
-        <div>
+        <div class="det">
             <p>ID: ${intern.id}</p>
-            <a href="">Email: ${intern.email}</a>
+            <p>Email: <span><a href="${intern.email}" target="_blank">${intern.email}</a></span></p>
             <p>School: ${intern.school}</p>
         </div>
     </div>
@@ -205,26 +209,29 @@ const genIntCard = () => {
 }
 
 const generateHtml = () => {
-    `<!DOCTYPE html>
+    const makehtml = `<!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./dist/style.css">
         <title>Team Builder</title>
     </head>
-    <body>
-        <header>My Team</header>
+    <body class="m-0">
+        <header class="header">My Team</header>
         
         <main>
-          <div>${genManCard()}</div>
-          <div>${genEngCard()}</div>
-          <div>${genIntCard()}</div>
+            <div class="cont">${genManCard()}</div>
+            <div class="cont">${genEngCard()}</div>
+            <div class="cont">${genIntCard()}</div>
         </main>
 
-        <footer></footer>
+        <footer class="footer"></footer>
     </body>
-    </html>`
+    </html>`;
+
+    fs.writeFile("team.html", makehtml, (err) => (err ? console.error(err) : console.log("success!")));
 }
 
 
